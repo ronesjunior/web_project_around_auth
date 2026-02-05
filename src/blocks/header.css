@@ -3,9 +3,118 @@
   border-bottom: 1px solid rgba(84, 84, 84, 0.7);
   min-height: 120px;
   align-items: center;
+  justify-content: space-between;
 }
 
 .header__logo {
   width: 173px;
   height: 33px;
+}
+
+.header_nav {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.header__email {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.header__button {
+  margin-left: 56px;
+  font-size: 18px;
+  font-weight: 400;
+  background-color: #000;
+  color: #a9a9a9; /* texto branco */
+  border: none;
+  box-shadow: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.header__button:hover {
+  opacity: 0.8;
+}
+
+.header__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 30px;
+}
+
+.header__burger span {
+  height: 3px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* .header__burger_active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.header__burger_active span:nth-child(2) {
+  opacity: 0;
+}
+
+.header__burger_active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+} */
+
+.header__burger_active {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 32px;
+  height: 32px;
+  background-image: url("../images/Close_Icon.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.popup__fechar-botao:hover {
+  opacity: 0.6;
+}
+
+@media screen and (max-width: 768px) {
+  .header__burger {
+    display: flex;
+  }
+
+  .header_nav {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background: #000;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    display: none;
+  }
+
+  .header_nav_open {
+    display: flex;
+  }
 }
