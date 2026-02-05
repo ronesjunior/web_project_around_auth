@@ -24,14 +24,13 @@ export default function Header() {
     headerLink = (
       <ul className={`header_nav ${menuOpen ? "header_nav_open" : ""}`}>
         <li className="header__email">{currentUser.email}</li>
-        <li>
-          <button
-            className="header__button header__button_signout"
-            onClick={signOut}
-          >
-            Sair
-          </button>
-        </li>
+
+        <button
+          className="header__button header__button_signout"
+          onClick={signOut}
+        >
+          Sair
+        </button>
       </ul>
     );
   }
@@ -63,17 +62,24 @@ export default function Header() {
     <header className="header">
       <img src={logo} alt="Around the U.S logo" className="header__logo" />
       {/* BOTÃO HAMBÚRGUER (mobile) */}
-      <button
-        className={`header__burger ${menuOpen ? "header__burger_active" : ""}`}
-        onClick={toggleMenu}
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      {isLoggedIn && (
+        <>
+          <button
+            className={`header__burger ${menuOpen ? "header__burger_active" : ""}`}
+            onClick={toggleMenu}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
 
-      {/* MENU */}
-      {headerLink}
+          {/* MENU */}
+          {headerLink}
+        </>
+      )}
+
+      {/* Links de login / signup (quando NÃO estiver logado) */}
+      {!isLoggedIn && headerLink}
     </header>
   );
 }

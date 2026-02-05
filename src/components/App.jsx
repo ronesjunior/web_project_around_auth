@@ -13,6 +13,9 @@ import { auth } from "../utils/auth.js";
 import { setToken, getToken } from "../utils/token.js";
 import Login from "./Login/Login.jsx";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute.jsx";
+import signupFail from "../assets/signfail.svg";
+import signupSucess from "../assets/signsucess.svg";
+import InfoTooltip from "./InfoTooltip/InfoTooltip.jsx";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null); //variável de estado para o usuário
@@ -104,30 +107,28 @@ export default function App() {
     auth
       .register({ email, password })
       .then(() => {
-        alert("Vitória! Você precisa ser registrar");
-        // const infoTolltip = {
-        //   children: (
-        //     <infoTolltip
-        //       icon={signupSuccess}
-        //       message="Vitória! Você precisa ser registrar"
-        //     />
-        //   ),
-        // };
-        // handleOpenPopup(infoTolltip);
-        navigate("/");
+        handleOpenPopup({
+          children: (
+            <InfoTooltip
+              icon={signupSucess}
+              message="Cadastro realizado com sucesso! Agora faça o login."
+              onClose={handleClosePopup}
+            />
+          ),
+        });
+
+        navigate("/signin");
       })
-      .catch((error) => {
-        console.log("error", error);
-        alert("Ops, algo saiu de errado! Por favor, tente novamente.");
-        // const infoToollip = {
-        //   children: (
-        //     <infoTolltip
-        //       icon={signupFail}
-        //       message="Ops, algo saiu de errado! Por favor, tente novamente."
-        //     />
-        //   ),
-        // };
-        // handleOpenPopup(infoToollip);
+      .catch(() => {
+        handleOpenPopup({
+          children: (
+            <InfoTooltip
+              icon={signupFail}
+              message="Ops, algo deu errado! Por favor, tente novamente."
+              onClose={handleClosePopup}
+            />
+          ),
+        });
       });
   };
 
@@ -142,16 +143,16 @@ export default function App() {
       })
       .catch((error) => {
         console.log("error", error);
-        alert("Ops, algo saiu de errado! Por favor, tente novamente.");
-        // const infoToollip = {
-        //   children: (
-        //     <infoTolltip
-        //       icon={signupFail}
-        //       message="Ops, algo saiu de errado! Por favor, tente novamente."
-        //     />
-        //   ),
-        // };
-        // handleOpenPopup(infoToollip);
+        const tooltipData = {
+          children: (
+            <InfoTooltip
+              icon={signupFail}
+              message="Ops, algo saiu de errado! Por favor, tente novamente."
+              onClose={handleClosePopup}
+            />
+          ),
+        };
+        handleOpenPopup(tooltipData);
       });
   };
 
@@ -179,32 +180,6 @@ export default function App() {
       })
       .catch((error) => console.error("Erro ao atualizar usuário:", error));
   };
-
-  // async function handleCardLike(card) {
-  //   const isLiked = card.isLiked;
-
-  //   await api
-  //     .changeLikeCardStatus(card._id, !isLiked)
-  //     .then((newCard) => {
-  //       setCards((state) =>
-  //         state.map((currentCard) =>
-  //           currentCard._id === card._id ? newCard : currentCard,
-  //         ),
-  //       );
-  //     })
-  //     .catch((error) => console.error(error));
-  // }
-
-  // async function handleCardDelete(card) {
-  //   await api
-  //     .removeCard(card._id)
-  //     .then(() => {
-  //       setCards((state) =>
-  //         state.filter((currentCard) => currentCard._id !== card._id),
-  //       );
-  //     })
-  //     .catch((error) => console.error(error));
-  // }
 
   const handleAddPlaceSubmit = (data) => {
     api
@@ -262,6 +237,7 @@ export default function App() {
           </Routes>
           {/*enviar para o componente Main.jsx a prop chamada 'currentUser' com a variável chamada 'currentUser' criada com o UseState */}
           {/* componente filho Main.jsx no meio da aplicação */}
+          {popup && popup.children}
           <Footer /> {/* componente filho Footer.jsx no final da aplicação */}
         </div>
       </div>
