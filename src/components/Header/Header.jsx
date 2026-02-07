@@ -1,6 +1,8 @@
 import logo from "../../images/header.png";
+import menuburguer_icon from "../../assets/burger_menu.svg";
+import close_icon from "../../images/Close_Icon.png";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../../blocks/header.css";
 
@@ -18,13 +20,23 @@ export default function Header() {
     setMenuOpen(!menuOpen);
   }
 
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth > 544) {
+        setMenuOpen(false);
+      }
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   let headerLink;
 
   if (isLoggedIn) {
     headerLink = (
       <ul className={`header_nav ${menuOpen ? "header_nav_open" : ""}`}>
         <li className="header__email">{currentUser.email}</li>
-
         <button
           className="header__button header__button_signout"
           onClick={signOut}
@@ -59,24 +71,23 @@ export default function Header() {
   }
 
   return (
-    <header className="header">
-      <img src={logo} alt="Around the U.S logo" className="header__logo" />
-      {/* BOTÃO HAMBÚRGUER (mobile) */}
-      {isLoggedIn && (
-        <>
-          <button
-            className={`header__burger ${menuOpen ? "header__burger_active" : ""}`}
-            onClick={toggleMenu}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-
-          {/* MENU */}
-          {headerLink}
-        </>
-      )}
+    // <header className={`header ${menuOpen ? "header_menu-open" : ""}`}>
+    <header className={"header"}>
+      {menuOpen && headerLink}
+      <div className="header__menu">
+        <img src={logo} alt="Around the U.S logo" className="header__logo" />
+        {isLoggedIn && (
+          <>
+            <button className={`header__burger`} onClick={toggleMenu}>
+              <img
+                src={menuOpen ? close_icon : menuburguer_icon}
+                alt="menu hamburger"
+              />
+            </button>
+            {!menuOpen && headerLink}
+          </>
+        )}
+      </div>
 
       {/* Links de login / signup (quando NÃO estiver logado) */}
       {!isLoggedIn && headerLink}
